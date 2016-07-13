@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import application.Main;
 import content.Arm;
 import content.Patient;
+import content.tool.Tool;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
@@ -72,7 +73,7 @@ public final class WindowHandler
 	private static final double TOOL_GRID_HGAP = INFO_BOX_WIDTH_RESOLUTION / 4 - 10;
 	private static final double TOOL_GRID_VGAP = 0;
 
-	private static final String MESH_SELECTION_TITLE = "Selezione modello";
+	private static final String MESH_SELECTION_TITLE = "Selezione modelli";
 	
 	/*
 	 * A private constructor to override the default public one.
@@ -301,13 +302,18 @@ public final class WindowHandler
 			
 			Label leftToolModelLabel[] = new Label[Main.TOOL_LIST.size()];
 			
+			
+			
 			for(int i = 0; i < Main.TOOL_LIST.size(); i++)
 			{
 				leftToolModelLabel[i] = new Label(Main.TOOL_LIST.get(i).getType());
 				grid.add(leftToolModelLabel[i], 0, i + 1);
-			
+					
 				ComboBox<String> leftToolModel = new ComboBox<>(modelsOptions);
 				leftToolModel.setId("tool");
+				
+				final int temp = i;
+				
 				leftToolModel.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() 
 				{
 					@Override
@@ -319,8 +325,8 @@ public final class WindowHandler
 							{
 								try
 								{
-									Main.TOOL_LIST.get(i).changeMesh(modelsList.get(k).toURL());
-									Main.LOG.log(Level.INFO, "lol");
+									Main.TOOL_LIST.get(temp).changeMesh(modelsList.get(k).toURL());
+									Main.LOG.log(Level.INFO, "Model changed");
 								}
 								catch(Exception e) {}
 							}
