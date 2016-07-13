@@ -1,0 +1,5 @@
+projectKey=Fdp_Advanced_project
+serverUrl=http://localhost:9000
+dashboardUrl=http://localhost:9000/dashboard/index/Fdp_Advanced_project
+ceTaskId=AVXFm7VxcIvvcW1qn1gm
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVXFm7VxcIvvcW1qn1gm
