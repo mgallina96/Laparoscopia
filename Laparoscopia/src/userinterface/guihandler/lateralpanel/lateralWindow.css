@@ -1,0 +1,37 @@
+.gridPane
+{
+	-fx-border-color: black;
+	-fx-border-width: 1.0;
+	
+    -fx-background-radius: 0.5;
+    -fx-background-insets: 0.0 5.0 0.0 5.0;
+    -fx-padding: 5;
+}
+
+.Label
+{
+	-fx-alignment: baseline-left;
+	
+	-fx-font-family: verdana;
+	-fx-font-size: 14;
+	-fx-text-fill: rgb(255, 255, 255);
+}
+
+.separator .line
+{
+	-fx-border-color: black;
+	-fx-border-width: 0.5;
+}
+
+.comboBox
+{
+	-fx-background-radius: 0;
+}
+
+#lateralWindow
+{
+	-fx-background-color: rgb(77,77,77);
+	
+	-fx-border-color: rgb(0,0,0);
+	-fx-border-width: 1;
+}
