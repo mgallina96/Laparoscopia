@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 import application.Main;
+import application.Simulation;
 import content.Arm;
 import content.Patient;
 import content.tool.Tool;
@@ -300,13 +301,13 @@ public final class WindowHandler
 			
 			//// Tools
 			
-			Label leftToolModelLabel[] = new Label[Main.TOOL_LIST.size()];
+			Label leftToolModelLabel[] = new Label[Simulation.TOOL_LIST.size()];
 			
 			
 			
-			for(int i = 0; i < Main.TOOL_LIST.size(); i++)
+			for(int i = 0; i < Simulation.TOOL_LIST.size(); i++)
 			{
-				leftToolModelLabel[i] = new Label(Main.TOOL_LIST.get(i).getType());
+				leftToolModelLabel[i] = new Label(Simulation.TOOL_LIST.get(i).getType());
 				grid.add(leftToolModelLabel[i], 0, i + 1);
 					
 				ComboBox<String> leftToolModel = new ComboBox<>(modelsOptions);
@@ -325,7 +326,7 @@ public final class WindowHandler
 							{
 								try
 								{
-									Main.TOOL_LIST.get(temp).changeMesh(modelsList.get(k).toURL());
+									Simulation.TOOL_LIST.get(temp).changeMesh(modelsList.get(k).toURL());
 									Main.LOG.log(Level.INFO, "Model changed");
 								}
 								catch(Exception e) {}

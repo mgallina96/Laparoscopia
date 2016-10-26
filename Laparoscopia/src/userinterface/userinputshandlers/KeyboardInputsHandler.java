@@ -130,8 +130,8 @@ public class KeyboardInputsHandler
 	 */
 	public void handleKeyboard(Scene scene, Arm leftArm, Arm rightArm, Axis axis) 
 	{
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-        	
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() 
+        {        	
         	/**
         	 * Sets the commands.
         	 * 
@@ -146,48 +146,20 @@ public class KeyboardInputsHandler
                     	Stage window = (Stage)scene.getWindow();
                     	window.close();
                         break;
-                    case R:
-                    	reset = true;
-                        break;
-                    case X:
-                    	axis.switchVisibility();
-                    	break;
-                    case W:
-                    	leftYAxis = 1;
-                        break;
-                    case A:
-                    	leftXAxis = -1;
-                        break;
-                    case S:
-                    	leftYAxis = -1;
-                        break;
-                    case D:
-                    	leftXAxis = 1;
-                        break;
-                    case Q:
-                    	leftZAxis = -1;
-                    	break;
-                    case E:
-                    	leftZAxis = 1;
-                    	break;
-                    case I:
-                    	rightYAxis = 1;
-                        break;
-                    case J:
-                    	rightXAxis = -1;
-                        break;
-                    case K:
-                    	rightYAxis = -1;
-                        break;
-                    case L:
-                    	rightXAxis = 1;
-                        break;
-                    case U:
-                    	rightZAxis = -1;
-                    	break;
-                    case O:
-                    	rightZAxis = 1;
-                    	break;
+                    case R: reset = true; break;
+                    case X: axis.switchVisibility(); break;
+                    case W: leftYAxis = 1; break;
+                    case A: leftXAxis = -1; break;
+                    case S: leftYAxis = -1; break;
+                    case D: leftXAxis = 1; break;
+                    case Q: leftZAxis = -1; break;
+                    case E: leftZAxis = 1; break;
+                    case I: rightYAxis = 1; break;
+                    case J: rightXAxis = -1; break;
+                    case K: rightYAxis = -1; break;
+                    case L: rightXAxis = 1; break;
+                    case U: rightZAxis = -1; break;
+                    case O: rightZAxis = 1; break;
                     default:
                     	event.consume();
                     	reset();

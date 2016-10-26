@@ -1,10 +1,6 @@
 package content;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import content.tool.Tool;
-
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Cylinder;
@@ -20,18 +16,16 @@ import userinterface.graphichandler.graphicobject.Object3D;
  * 
  * @author Michele Franceschetti
  */
-
 public class Arm 
 {
 	private static final double ARM_RADIUS = 6;
-
-	private static final double KNEE_RADIUS = 5;
-	
-	private static final double MAX_DISTANCE_FROM_AXIS = 400.0;
-	
 	private static final Color ARM_COLOR = Color.BLUE;
+	
+	private static final double KNEE_RADIUS = 5;
 	private static final Color KNEE_COLOR = Color.CYAN;
 	
+	private static final double MAX_DISTANCE_FROM_AXIS = 400.0;
+		
 	private Object3D upperArm = new Object3D();
 	private Object3D foreArm = new Object3D();
 	private Object3D hand = new Object3D();
@@ -40,7 +34,6 @@ public class Arm
 	private float foreArmLenght;
 		
 	private Tool selectedTool;
-	private ArrayList<Tool> toolList = new ArrayList<>();
 	
 	private Translate target;
 	
@@ -120,26 +113,6 @@ public class Arm
 		hand.getChildren().add(tool.getParent());
 	}
 	
-	/**
-	 * Returns the list of tools.
-	 * 
-	 * @return The tool list.
-	 */
-	public List<Tool> getToolList() 
-	{
-		return toolList;
-	}
-
-	/**
-	 * The tool list to set.
-	 * 
-	 * @param toolList The tool list to set.
-	 */
-	public void setToolList(List<Tool> toolList) 
-	{
-		this.toolList = (ArrayList<Tool>) toolList;
-	}
-
 	/**
 	 * Creates the hierarchy of the arm.
 	 */

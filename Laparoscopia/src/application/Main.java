@@ -1,7 +1,7 @@
 package application;
 	
 import javafx.application.Application;
-
+import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 
 import userinterface.graphichandler.Axis;
@@ -10,23 +10,17 @@ import userinterface.guihandler.WindowHandler;
 import userinterface.userinputshandlers.KeyboardInputsHandler;
 import userinterface.userinputshandlers.MouseInputsHandler;
 import userinterface.graphichandler.graphicobject.Object3D;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import content.tool.Forceps;
-import content.tool.Scalpel;
-import content.tool.Tool;
-import content.tool.VacuumCleaner;
 
 /**
  * @author Michele Franceschetti
@@ -34,73 +28,60 @@ import content.tool.VacuumCleaner;
  */
 public class Main extends Application 
 {
-	/**
-	 * The logger of the application.
-	 */
+	/** The logger of the application. */
 	public static final Logger LOG = Logger.getLogger(Main.class.getName());
 	
-	/**
-     * The list of tools available.
-     */
-    public static final ArrayList<Tool> TOOL_LIST = new ArrayList<>(Arrays.asList(
-    		new Forceps("Forcipe"), 
-    		new Scalpel("Bisturi"), 
-    		new VacuumCleaner("Aspiratore"))
-    		);
-
+	private HBox mainPane;
+	private Scene guiScene;
+	private AnchorPane lateralPanel;
+	
 	@Override
 	public void start(Stage window) 
     {
 		try 
 		{	
 			//Log settings
-			LOG.setLevel(Level.INFO);		
-			
-			/////////////////////////////////////////////////////////////////////
+			LOG.setLevel(Level.CONFIG);		
 			
 			//3D view
-			final Group root3D = new Group();
-		    final Object3D world = new Object3D();
-		    final Object3D axis = new Object3D();
+			Group root3D = new Group();
+		    Object3D world = new Object3D();
+		    Axis axisMesh = new Axis(new Object3D());
+		    View camera = new View(world);
 		    
-		    Axis axisMesh = new Axis(axis);
+		    SubScene scene3D = new SubScene(
+		    		root3D, WindowHandler.SCENE3D_WIDTH_RESOLUTION, 
+		    		WindowHandler.SCENE3D_HEIGHT_RESOLUTION, 
+		    		true, 
+		    		SceneAntialiasing.BALANCED
+		    		);
 		    
-		    final View camera = new View(world);
-		    final SubScene scene3D = new SubScene(
-		    		root3D, WindowHandler.SCENE3D_WIDTH_RESOLUTION, WindowHandler.SCENE3D_HEIGHT_RESOLUTION, 
-		    		true, SceneAntialiasing.BALANCED);
-		    
-		    final KeyboardInputsHandler keyboard = new KeyboardInputsHandler();
-		    final MouseInputsHandler mouse = new MouseInputsHandler();
-		    
-		    root3D.getChildren().add(world);
-		    
-	        world.getChildren().addAll(axisMesh.getParent(), Simulation.PATIENT.getParent());
+	        world.getChildren().addAll(
+	        		axisMesh.getParent(), 
+	        		Simulation.PATIENT.getParent(), 
+	        		Simulation.LEFT_ARM.getUpperArm(), 
+	        		Simulation.RIGHT_ARM.getUpperArm()
+	        		);
+	        
+	        root3D.getChildren().add(world);
 	        
 	        scene3D.setCamera(camera.getCamera());
 			scene3D.setFill(Paint.valueOf("lightgray"));      
 	        
-			world.getChildren().addAll(Simulation.LEFT_ARM.getUpperArm(), Simulation.RIGHT_ARM.getUpperArm());
-	        
 			/////////////////////////////////////////////////////////////////////
 			
-			Simulation.LEFT_ARM.setToolList(TOOL_LIST);
-			Simulation.RIGHT_ARM.setToolList(TOOL_LIST);
+			//Main window
+	        mainPane = new HBox();
 			
-	        //Main window
-	        HBox mainPane = new HBox();
+			lateralPanel = (AnchorPane) FXMLLoader.load(Main.class.getResource("/userinterface/guihandler/lateralpanel/LateralWindow.fxml"));
+	        lateralPanel.getStylesheets().add(getClass().getResource("/userinterface/guihandler/lateralpanel/lateralWindow.css").toExternalForm());
+			
+	        guiScene = new Scene(mainPane, WindowHandler.MAIN_WINDOW_WIDTH_RESOLUTION, WindowHandler.MAIN_WINDOW_HEIGHT_RESOLUTION);
 	        
-	        Scene guiScene = new Scene(mainPane, WindowHandler.MAIN_WINDOW_WIDTH_RESOLUTION, WindowHandler.MAIN_WINDOW_HEIGHT_RESOLUTION);
-	        guiScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	        new KeyboardInputsHandler().handleKeyboard(guiScene, Simulation.LEFT_ARM, Simulation.RIGHT_ARM, axisMesh);
+		    new MouseInputsHandler().handleMouse(guiScene, camera);
 	        
-	        VBox lateralWindow = WindowHandler.lateralWindow(Simulation.PATIENT, Simulation.LEFT_ARM, 
-	        													Simulation.RIGHT_ARM);
-			lateralWindow.setId("lateralWindow");
-	        
-	        keyboard.handleKeyboard(guiScene, Simulation.LEFT_ARM, Simulation.RIGHT_ARM, axisMesh);
-	        mouse.handleMouse(guiScene, camera);
-	        
-	        mainPane.getChildren().addAll(scene3D, lateralWindow);
+	        mainPane.getChildren().addAll(scene3D, lateralPanel);
 			
 			window.setScene(guiScene);
 			window.setTitle(WindowHandler.WINDOW_TITLE);
@@ -109,11 +90,11 @@ public class Main extends Application
 		}
 		catch(Exception e) 
 		{
-			LOG.log(Level.INFO, "EXCEPTION: ", e);
+			LOG.log(Level.WARNING, "EXCEPTION: ", e);
 		}
 		finally
 		{
-			
+			mainPane.setVisible(false);
 		}
     }
 
